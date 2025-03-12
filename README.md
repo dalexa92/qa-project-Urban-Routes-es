@@ -11,7 +11,8 @@ venv/
 .pytest_cache/
 _pycache_
 data.py
-main.py
+helpers.py
+UrbanRoutesPage
 testUrbanRoutes.py
 README.md
 

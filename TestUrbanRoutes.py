@@ -1,17 +1,17 @@
-import time
-
 import data
+import helpers
+from UrbanRoutesPage import UrbanRoutesPage
 from selenium import webdriver
-from selenium.webdriver import Keys  #Permite dar TAB o Enter
-from selenium.webdriver.common.by import By #Permite seleccionar los elementos por diferentes metodos (ID, CSS)
-from selenium.webdriver.support import expected_conditions as EC #Se agrega el alias para validar un nombre mas corto
-from selenium.webdriver.support.wait import WebDriverWait #El q nos realiza las esperas para el cargue de elementos en la pantalla
+from selenium.webdriver import Keys  # Permite dar TAB o Enter
+from selenium.webdriver.common.by import By  # Permite seleccionar los elementos por diferentes metodos (ID, CSS)
+from selenium.webdriver.support import expected_conditions as EC  # Se agrega el alias para validar un nombre mas corto
+from selenium.webdriver.support.wait import \
+    WebDriverWait  # El q nos realiza las esperas para el cargue de elementos en la pantalla
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.chrome.options import Options
-from main import UrbanRoutesPage
 
 
-class TestUrbanRoutes: #esta es la prueba
+class TestUrbanRoutes:  # esta es la prueba
 
     driver = None
 
@@ -24,27 +24,28 @@ class TestUrbanRoutes: #esta es la prueba
         cls.driver = webdriver.Chrome(service=Service(), options=options)
 
     def test_set_route(self):
-        self.driver.get(data.urban_routes_url) #abre la pagina del servidor
-        routes_page = UrbanRoutesPage(self.driver) #Se esta creando un objeto de la clase urban routes page
-        address_from = data.address_from #crean variable q toda la direccion de data
+        self.driver.get(data.urban_routes_url)  # abre la pagina del servidor
+        routes_page = UrbanRoutesPage(self.driver)  # Se esta creando un objeto de la clase urban routes page
+        address_from = data.address_from  # crean variable q toda la direccion de data
         address_to = data.address_to
-        routes_page.set_route(address_from, address_to) #el set es un metodo lo que realiza es digitar la direccion en la pagina
-        assert routes_page.get_from() == address_from  #los assert compara y confirma que si sea lo que correspode
+        routes_page.set_route(address_from,
+                              address_to)  # el set es un metodo lo que realiza es digitar la direccion en la pagina
+        assert routes_page.get_from() == address_from  # los assert compara y confirma que si sea lo que correspode
         assert routes_page.get_to() == address_to
 
     def test_select_comfort_rate(self):
-        self.test_set_route() #esto corre la prueba dejando en un estado el explorador
-        routes_page = UrbanRoutesPage(self.driver) #se crea un objeto de esta clase
-        routes_page.click_on_request_taxi_button() #lo que se quiere es clickear
-        routes_page.click_on_comfort_rate_icon() #icono de comfort
+        self.test_set_route()  # esto corre la prueba dejando en un estado el explorador
+        routes_page = UrbanRoutesPage(self.driver)  # se crea un objeto de esta clase
+        routes_page.click_on_request_taxi_button()  # lo que se quiere es clickear
+        routes_page.click_on_comfort_rate_icon()  # icono de comfort
 
         comfort_rate = routes_page.get_comfort_rate_icon().text
         comfort_text = "Comfort"
-        assert  comfort_rate in comfort_text
-        assert routes_page.get_comfort_rate_icon().text in "Comfort" #que texto tiene el icono
+        assert comfort_rate in comfort_text
+        assert routes_page.get_comfort_rate_icon().text in "Comfort"  # que texto tiene el icono
 
     def test_phone_number(self):
-        self.test_select_comfort_rate() #Utilizamos el test anterior
+        self.test_select_comfort_rate()  # Utilizamos el test anterior
         routes_page = UrbanRoutesPage(self.driver)
         routes_page.click_on_phone_number_button()
         phone_number = data.phone_number
@@ -56,7 +57,7 @@ class TestUrbanRoutes: #esta es la prueba
         assert routes_page.get_phone_number_field().get_attribute('value') == data.phone_number
 
     def test_payment_method_button(self):
-        self.test_phone_number() #Inicio con el test anteior
+        self.test_phone_number()  # Inicio con el test anteior
         routes_page = UrbanRoutesPage(self.driver)
         routes_page.click_payment_method_button()
         routes_page.click_add_card_button()
@@ -65,7 +66,7 @@ class TestUrbanRoutes: #esta es la prueba
         routes_page.set_code_field()
         routes_page.get_code_field().send_keys(Keys.TAB)
         routes_page.click_on_add_button()
-        assert routes_page.get_card_label().text ==  'Tarjeta'
+        assert routes_page.get_card_label().text == 'Tarjeta'
         routes_page.click_on_close_popup_button()
 
     def test_message_for_driver_field(self):
@@ -95,17 +96,6 @@ class TestUrbanRoutes: #esta es la prueba
         routes_page.get_reserve_taxi_button()
         routes_page.click_on_reserve_taxi_button()
         assert routes_page.get_reserve_taxi_button().text in "Pedir un taxi"
-
-
-
-
-
-
-
-
-
-
-
 
     @classmethod
     def teardown_class(cls):
