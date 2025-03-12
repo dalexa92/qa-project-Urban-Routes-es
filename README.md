@@ -27,7 +27,7 @@ COMO EJECUTAR EL PROYECTO:
 Asegurarnos de estar en el entorno virtual ( .venv)
 Ejecutar las pruebas siempre con pytest.
 El comando correcto para su ejecucion sería: pytest folder/TestUrbanRoutes.py
-Los localizadores y Metodos se encuentran alojados en el archivo main.py
+Los localizadores y Metodos se encuentran alojados en el archivo UrbanRoutesPage.py
 
 Si ves necesaria alguna modificación por favor seguir los siguientes pasos:
 1 Crea una rama con tus cambios 
